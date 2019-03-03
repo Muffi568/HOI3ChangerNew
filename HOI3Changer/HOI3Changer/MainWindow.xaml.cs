@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using SharedData;
 
 namespace HOI3Changer
 {
@@ -20,9 +21,13 @@ namespace HOI3Changer
     /// </summary>
     public partial class MainWindow : Window
     {
+        //private string _path = @"F:\Program Files (x86)\Paradox Interactive\Hearts of Iron III";
+        private string _path = @"D:\Program Files (x86)\GOG Galaxy\Games\Hearts of Iron III";
         public MainWindow()
         {
             InitializeComponent();
+			BundleData bundle = new BundleData(_path);
+
         }
     }
 }
