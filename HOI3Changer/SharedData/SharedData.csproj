@@ -47,8 +47,9 @@
     <Compile Include="Information.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Technology.cs" />
-    <Compile Include="Technologynames.cs" />
+    <Compile Include="Technologyname.cs" />
     <Compile Include="TextFile.cs" />
+    <Compile Include="Trait.cs" />
     <Compile Include="WeaponCategory.cs" />
     <Compile Include="WeaponModel.cs" />
   </ItemGroup>

@@ -1,25 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SharedData {
-    class Technologynames : Information {
+    public class Technologyname : Information {
         public string Stage { get; set; }
         public Country Country { get; set; }
         public Technology Technology { get; set; }
-        public static List<Technologynames> getTechnologynames(List<Country> countries, List<Technology> technologies) {
-            List<Technologynames> ret = new List<Technologynames>();
+        public static ObservableCollection<Technologyname> getTechnologynames(ObservableCollection<Country> countries, ObservableCollection<Technology> technologies) {
+			ObservableCollection<Technologyname> ret = new ObservableCollection<Technologyname>();
             GlobalInfos global = GlobalInfos.getInstance();
             bool isstart = true;
             TextFile technameFile = global.getPath(@"\localisation\technology.csv");
+			if (technameFile == null)
+				return null;
             string[] technameLines = technameFile.Lines;
-            for (int i = 0; i < technameLines.Length; i++) {
-                string line = technameLines[i];
+            //for (int i = 0; i < technameLines.Length; i++) {
+            //    string line = technameLines[i];
+			foreach(string line in technameLines) { 
                 string[] lineparts = line.Split(';');
-                Regex r;
                 if (isstart) {
                     if (lineparts[0] == "# Tech Names") 
                         isstart = false;
@@ -29,7 +32,7 @@ namespace SharedData {
                     else {
                         if (line.StartsWith("#"))
                             continue;
-                        Technologynames t = new Technologynames();
+                        Technologyname t = new Technologyname();
                         string name = lineparts[0];
                         string[] nameparts = name.Split('_');
                         if (!countries.Any(x => x.Shortcut == nameparts[0]))

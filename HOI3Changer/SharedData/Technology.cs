@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -7,18 +8,18 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SharedData {
-	class Technology : Information {
+	public class Technology : Information {
 		public string Typ { get; set; }
 		public bool OnceTech { get; set; } = true;
 		private List<WeaponCategory> WeaponCategories { get; set; } = new List<WeaponCategory>();
-		public static List<Technology> getTechnologies(List<WeaponCategory> weaponCategories) {
+		public static ObservableCollection<Technology> getTechnologies(ObservableCollection<WeaponCategory> weaponCategories) {
 			GlobalInfos global = GlobalInfos.getInstance();
 			TextFile techFile = global.getPath(@"\localisation\technology.csv");
 			if (techFile == null)
 				return null;
 			bool isstart = true;
 			string typ = "";
-			List<Technology> ret = new List<Technology>();
+			ObservableCollection<Technology> ret = new ObservableCollection<Technology>();
             string[] techLines = techFile.Lines;
             Regex infantryReg = new Regex("Infantry Techs");
             Regex descReg = new Regex("_desc");
@@ -85,7 +86,7 @@ namespace SharedData {
 			}
 			return ret;
 		}
-		private static void findTyps_new(Technology t, List<WeaponCategory> weaponCategories) {
+		private static void findTyps_new(Technology t, ObservableCollection<WeaponCategory> weaponCategories) {
 			GlobalInfos global = GlobalInfos.getInstance();
 			TextFile typFile = global.getPath(@"technologies\" + t.Typ);
 			if (typFile == null)

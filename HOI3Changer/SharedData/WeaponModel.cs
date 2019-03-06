@@ -1,30 +1,64 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace SharedData {
-	class WeaponModel : Information {
-		private string Stage { get; set; }
-		private Country Country { get; set; }
-		private WeaponCategory WeaponCategory { get; set; }
-		private List<string[]> Skills { get; set; } = new List<string[]>();
+	public class WeaponModel : Information {
+		private Country _country;
+		private WeaponCategory _weaponCategory;
+		private string _stage;
+		public string Stage {
+			get { return _stage; }
+			set {
+				if (_stage != value) {
+					_stage = value;
+					setShortcut();
+				}
+			}
+		}
+		public Country Country {
+			get { return _country; }
+			set {
+				if (_country != value) {
+					_country = value;
+					setShortcut();
+				}
+			}
+		}
+		public WeaponCategory WeaponCategory {
+			get { return _weaponCategory; }
+			set {
+				if (_weaponCategory != value) {
+					_weaponCategory = value;
+					setShortcut();
+				}
+			}
+		}
+		public List<string[]> Skills { get; set; } = new List<string[]>();
 
-		public static List<WeaponModel> getWeaponModels(List<Country> countries, List<WeaponCategory> categories) {
-			List<WeaponModel> ret = new List<WeaponModel>();
+		private void setShortcut() {
+			if (_country != null && WeaponCategory != null)
+				Shortcut = _country.Shortcut + "_" + WeaponCategory.Shortcut + "_" + Stage;
+		}
+		public static ObservableCollection<WeaponModel> getWeaponModels(ObservableCollection<Country> countries, ObservableCollection<WeaponCategory> categories) {
+			ObservableCollection<WeaponModel> ret = new ObservableCollection<WeaponModel>();
 			GlobalInfos global = GlobalInfos.getInstance();
 			TextFile modelFile = global.getPath(@"localisation\models.csv");
 			if (modelFile == null)
 				return null;
             string[] modelLines = modelFile.Lines;
+			//Parallel.For(1, modelLines.Length, i => { 
             for (int i = 1; i < modelLines.Length; i++) {
 				string line = modelLines[i];
-                string[] lineparts = line.Split(';');
-                if (lineparts[0].StartsWith("#"))
-                    continue;
+				if (line.StartsWith("#"))
+					continue;
+				string[] lineparts = line.Split(';');
                 WeaponModel c = new WeaponModel();
                 string name = lineparts[0];
                 string[] nameparts = name.Split('_');

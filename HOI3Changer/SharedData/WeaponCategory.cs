@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 
 namespace SharedData {
-    class WeaponCategory : Information {
+    public class WeaponCategory : Information {
         public List<Technology> ListTechnologies { get; set; } = new List<Technology>();
         public enum typ { land, naval, air };
         private typ _Typ;
@@ -20,8 +21,8 @@ namespace SharedData {
         public typ getTyp() {
             return _Typ;
         }
-        public static List<WeaponCategory> getWeaponCategories() {
-            List<WeaponCategory> ret = new List<WeaponCategory>();
+        public static ObservableCollection<WeaponCategory> getWeaponCategories() {
+			ObservableCollection<WeaponCategory> ret = new ObservableCollection<WeaponCategory>();
             bool unitNames = false;
             GlobalInfos global = GlobalInfos.getInstance();
             TextFile unitFile = global.getPath(@"\localisation\units.csv");

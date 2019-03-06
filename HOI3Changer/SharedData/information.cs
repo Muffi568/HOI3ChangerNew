@@ -1,16 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SharedData {
-	public abstract class Information {
-		public string Shortcut { get; set; }
+	public abstract class Information: INotifyPropertyChanged {
+		private string _shortcut;
+		public string Shortcut { get { return _shortcut; }
+			set {
+				_shortcut = value;
+				OnPropertyChanged("Shortcut");
+			}
+		}
 		public string English { get; set; }
 		public string German { get; set; }
 		public string French { get; set; }
 		public string Spanish { get; set; }
+
+		public event PropertyChangedEventHandler PropertyChanged;
+		private void OnPropertyChanged(string property) {
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+		}
 		public override string ToString() {
 			//globalInfos global = globalInfos.getInstanz();
 			//Languages.languages language = global.getLanguage();
