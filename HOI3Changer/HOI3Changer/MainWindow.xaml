@@ -7,41 +7,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Grid.Resources>
-            <!--DataTemplate for Published Date column defined in Grid.Resources.  PublishDate is a property on the ItemsSource of type DateTime -->
-            <DataTemplate x:Key="DateTemplate" >
-                <StackPanel>
-                    <TextBlock Text="{Binding Country}" />
-                </StackPanel>
-            </DataTemplate>
-            <!--DataTemplate for the Published Date column when in edit mode. -->
-            <DataTemplate x:Key="EditingComboBox">
-                <ComboBox SelectedItem="{Binding Country}" ItemsSource="{Binding DataContext.Countries, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" />
-            </DataTemplate>
-        </Grid.Resources>
-        <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" ItemsSource="{Binding Models}" AutoGenerateColumns="False"  Height="399" Margin="10,10,0,0" VerticalAlignment="Top" Width="782">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Shortcut" Binding="{Binding Shortcut}" IsReadOnly="True" Width="*"></DataGridTextColumn>
-                <DataGridTextColumn Header="English" Binding="{Binding English}" Width="*"></DataGridTextColumn>
-                <DataGridTextColumn Header="German" Binding="{Binding German}" Width="*"></DataGridTextColumn>
-                <DataGridTextColumn Header="French" Binding="{Binding French}" Width="*"></DataGridTextColumn>
-                <DataGridTextColumn Header="Spanish" Binding="{Binding Spanish}" Width="*"></DataGridTextColumn>
-                <DataGridTextColumn Header="Stage" Binding="{Binding Stage}" Width="*"></DataGridTextColumn>
-                <DataGridTemplateColumn Header="Country">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ComboBox SelectedItem="{Binding Country}" ItemsSource="{Binding DataContext.Countries, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="WeaponCategory">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ComboBox SelectedItem="{Binding WeaponCategory}" ItemsSource="{Binding DataContext.Categories, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+        <local:WeaponModelControl x:Name="weaponModelControl" Grid.Column="0"></local:WeaponModelControl>
     </Grid>
 </Window>

@@ -5,7 +5,7 @@ using System.Text;
 using System.IO;
 
 namespace SharedData {
-    class TextFile {
+    public class TextFile {
         private string _path = "";
         private List<string> _trimedLines = new List<string>();
         public TextFile(string path) {

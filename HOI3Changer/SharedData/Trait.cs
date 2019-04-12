@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SharedData {
 	public class Trait:Information {
-
+        public Trait(string line) : base(line) { }
 		public static List<Trait> getTraits() {
 			List<Trait> ret = new List<Trait>();
 			GlobalInfos global = GlobalInfos.getInstance();
@@ -15,29 +15,19 @@ namespace SharedData {
 			TextFile unitFile = global.getPath(@"\localisation\units.csv");
 			if (unitFile == null)
 				return null;
-			string[] unitLines = unitFile.Lines;
+			var unitLines = unitFile.Lines;
 			bool traitNames = false;
-			for (int i = 0; i < unitLines.Length; i++) {
-				string line = unitLines[i];
-				string[] lineparts = line.Split(';');
-				if (!lineparts[0].StartsWith("#") && traitNames) {
-					Regex r = new Regex("short");
-					if (!r.IsMatch(lineparts[0])) {
-						Trait c = new Trait();
-						string name = lineparts[0];
-						c.Shortcut = name;
-						c.English = lineparts[1];
-						c.French = lineparts[2];
-						c.German = lineparts[3];
-						c.Spanish = lineparts[5];
-						ret.Add(c);
-					}
-				} else if (lineparts[0] == "# Trait Names") {
-					traitNames = true;
-					i++;
-				} else if (lineparts[0] == "# Unit Names") 
-					break;
-			}
+            /*for (int i = 0; i < unitLines.Count(); i++) {
+				string line = unitLines[i];*/
+            foreach (string line in unitLines) {
+                if (!line.StartsWith("#") && traitNames) {
+                    Trait c = new Trait(line);
+                    ret.Add(c);
+                } else if (line.StartsWith("# Trait Names")) {
+                    traitNames = true;
+                } else if (line.StartsWith("# Unit Names"))
+                    break;
+            }
 			return ret;
 		}
 	}

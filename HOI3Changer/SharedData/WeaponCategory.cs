@@ -21,54 +21,50 @@ namespace SharedData {
         public typ getTyp() {
             return _Typ;
         }
-        public static ObservableCollection<WeaponCategory> getWeaponCategories() {
-			ObservableCollection<WeaponCategory> ret = new ObservableCollection<WeaponCategory>();
+        public WeaponCategory(string line) : base(line) { }
+        public WeaponCategory() { }
+        public static void/*ObservableCollection<WeaponCategory>*/ getWeaponCategories(ThreadingObservableCollection<WeaponCategory> ret) {
+			//ObservableCollection<WeaponCategory> ret = new ObservableCollection<WeaponCategory>();
             bool unitNames = false;
             GlobalInfos global = GlobalInfos.getInstance();
             TextFile unitFile = global.getPath(@"\localisation\units.csv");
             if (unitFile == null)
-                return null;
+                return;
+            string[] typParts;// = line.Split(';');
             string[] unitLines = unitFile.Lines;
             for (int i = 0; i < unitLines.Length; i++) {
                 string line = unitLines[i];
-                string[] lineparts = line.Split(';');
-                if (!lineparts[0].StartsWith("#") && unitNames) {
-                    Regex r = new Regex("short");
-                    if (!r.IsMatch(lineparts[0])) {
-                        WeaponCategory c = new WeaponCategory();
-                        string name = lineparts[0];
-                        c.Shortcut = name;
-                        c.English = lineparts[1];
-                        c.French = lineparts[2];
-                        c.German = lineparts[3];
-                        c.Spanish = lineparts[5];
+                if (!line.StartsWith("#") && unitNames) {
+                    //if (!lineparts[0].EndsWith("short")) {
+                        WeaponCategory c = new WeaponCategory(line);
+                        string name = c.Shortcut;
                         TextFile typFile = global.getPath(@"units\" + name + ".txt");
                         if (typFile == null)
                             typFile = global.getPath(@"units\" + name.Split('_')[0] + ".txt");
-                        if (typFile == null) {
-                            string[] typpart = name.Split('_');
-                            typFile = global.getPath(@"units\" + typpart[0] + "_" + typpart[1] + ".txt");
-                        }
+                        //if (typFile == null) {
+                        //    string[] typpart = name.Split('_');
+                        //    typFile = global.getPath(@"units\" + typpart[0] + "_" + typpart[1] + ".txt");
+                        //}
                         if (typFile == null)
                             continue;
                         string[] typLines = typFile.Lines;
+                        Regex r;
                         foreach (string typLine in typLines) {
                             r = new Regex("type");
                             if (r.IsMatch(typLine)) {
-                                lineparts = typLine.Split('=');
-                                c.setTyp(lineparts[1].Trim());
+                                typParts = typLine.Split('=');
+                                c.setTyp(typParts[1].Trim());
                                 break;
                             }
                         }
                         ret.Add(c);
-                    }
-                } else if (lineparts[0] == "# Unit Names") {
+                    //}
+                } else if (line.StartsWith("# Unit Names")) {
                     unitNames = true;
                     i++;
                 } else if (unitNames)
                     break;
             }
-            return ret;
         }
     }
 }

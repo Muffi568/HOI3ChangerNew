@@ -4,27 +4,38 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
+using System.Windows.Threading;
 
 namespace SharedData {
 	public class BundleData {
-		private ObservableCollection<Country> countries;
-		private ObservableCollection<WeaponCategory> categories;
-		private ObservableCollection<WeaponModel> models;
-		private ObservableCollection<Technology> technologies;
-		private ObservableCollection<Technologyname> technologynames;
-		public ObservableCollection<Country> Countries { get { return countries; } }
-		public ObservableCollection<WeaponCategory> Categories { get { return categories; } }
-		public ObservableCollection<WeaponModel> Models { get { return models; } }
-		public ObservableCollection<Technology> Technologies { get { return technologies; } }
-		public ObservableCollection<Technologyname> Technologynames { get { return technologynames; } }
-		public BundleData(string path) {
+		public ThreadingObservableCollection<Country> Countries { get; set; }
+        public ThreadingObservableCollection<WeaponCategory> Categories { get; set; }
+        public ThreadingObservableCollection<WeaponModel> Models { get; set; }
+		public ThreadingObservableCollection<Technology> Technologies { get; set; }
+        public ThreadingObservableCollection<Technologyname> Technologynames { get; set; }
+        public BundleData(string path, Dispatcher dispatcher) {
 			GlobalInfos global = GlobalInfos.getInstance();
 			global.setPath(path);
-			countries = Country.getCountries();
-			categories = WeaponCategory.getWeaponCategories();
-			models = WeaponModel.getWeaponModels(countries, categories);
-			technologies = Technology.getTechnologies(categories);
-			technologynames = Technologyname.getTechnologynames(countries, technologies);
+            Countries = new ThreadingObservableCollection<Country>(dispatcher);
+            Categories = new ThreadingObservableCollection<WeaponCategory>(dispatcher);
+            Models = new ThreadingObservableCollection<WeaponModel>(dispatcher);
+            Technologies = new ThreadingObservableCollection<Technology>(dispatcher);
+            Technologynames = new ThreadingObservableCollection<Technologyname>(dispatcher);
+            if (dispatcher != null) {
+                Thread t = new Thread(tasks);
+                t.Start();
+            } else
+                tasks();
 		}
+        public void tasks() {
+            /*Countries = */Country.getCountries(Countries);
+            WeaponCategory.getWeaponCategories(Categories);
+            /*Technologies = */Technology.getTechnologies(Technologies, Categories);
+            /*Technologynames = */Technologyname.getTechnologynames(Technologynames, Countries, Technologies);
+            /*Models = */WeaponModel.getWeaponModels(Models, Countries, Categories, Technologies);
+            Models.Add(new WeaponModel());
+            System.Diagnostics.Debug.WriteLine("Fertig");
+        }
 	}
 }

@@ -11,8 +11,10 @@ namespace SharedData {
         public string Stage { get; set; }
         public Country Country { get; set; }
         public Technology Technology { get; set; }
-        public static ObservableCollection<Technologyname> getTechnologynames(ObservableCollection<Country> countries, ObservableCollection<Technology> technologies) {
-			ObservableCollection<Technologyname> ret = new ObservableCollection<Technologyname>();
+        public Technologyname() { }
+        public Technologyname (string line) : base(line) {}
+        public static ObservableCollection<Technologyname> getTechnologynames(ThreadingObservableCollection<Technologyname> ret, ThreadingObservableCollection<Country> countries, ThreadingObservableCollection<Technology> technologies) {
+			//ObservableCollection<Technologyname> ret = new ObservableCollection<Technologyname>();
             GlobalInfos global = GlobalInfos.getInstance();
             bool isstart = true;
             TextFile technameFile = global.getPath(@"\localisation\technology.csv");
@@ -32,9 +34,8 @@ namespace SharedData {
                     else {
                         if (line.StartsWith("#"))
                             continue;
-                        Technologyname t = new Technologyname();
-                        string name = lineparts[0];
-                        string[] nameparts = name.Split('_');
+                        Technologyname t = new Technologyname(line);
+                        string[] nameparts = t.Shortcut.Split('_');
                         if (!countries.Any(x => x.Shortcut == nameparts[0]))
                             continue;
                         t.Country = countries.First(x => x.Shortcut == nameparts[0]);
@@ -48,11 +49,6 @@ namespace SharedData {
                             continue;
                         t.Technology = technologies.First(x => x.Shortcut == Technology);
                         t.Stage = (nameparts[nameparts.Length - 1]);
-                        t.Shortcut = lineparts[0];
-                        t.English = lineparts[1];
-                        t.French = lineparts[2];
-                        t.German = lineparts[3];
-                        t.Spanish = lineparts[5];
                         ret.Add(t);
                     }
                 }

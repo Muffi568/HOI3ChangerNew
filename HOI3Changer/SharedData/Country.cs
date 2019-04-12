@@ -10,26 +10,17 @@ using System.Threading.Tasks;
 
 namespace SharedData {
 	public class Country:Information {
-
-		public static ObservableCollection<Country> getCountries() {
+        public Country(string line) : base(line) { }
+        public Country() { }
+		public static ObservableCollection<Country> getCountries(ThreadingObservableCollection<Country> ret) {
 			GlobalInfos global = GlobalInfos.getInstance();
 			TextFile countryFile = global.getPath(@"\localisation\countries.csv");
 			if (countryFile == null)
 				return null;
-			ObservableCollection<Country> ret = new ObservableCollection<Country>();
-            string[] countryLines = countryFile.Lines;
-			//Parallel.For(1, countryLines.Length, i => {
-			for (int i = 1; i < countryLines.Length; i++) {
-				string line = countryLines[i];
-				if (line.StartsWith("#"))
-					continue;
-				string[] lineparts = line.Split(';');
-				Country c = new Country();
-				c.Shortcut = lineparts[0];
-				c.English = lineparts[1];
-				c.French = lineparts[2];
-				c.German = lineparts[3];
-				c.Spanish = lineparts[5];
+			//ObservableCollection<Country> ret = new ObservableCollection<Country>();
+            var countryLines = countryFile.Lines.Where(x => !x.StartsWith("#"));
+			for (int i = 1; i < countryLines.Count(); i++) {
+				Country c = new Country(countryLines.ElementAt(i));
 				ret.Add(c);
 			}
 			return ret;

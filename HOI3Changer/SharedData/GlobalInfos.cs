@@ -7,7 +7,7 @@ using System.IO;
 
 namespace SharedData
 {
-    class GlobalInfos
+    public class GlobalInfos
     {
         //private string _path = @"F:\Program Files (x86)\Paradox Interactive\Hearts of Iron III";
         private string _path = @"D:\Program Files (x86)\GOG Galaxy\Games\Hearts of Iron III";
@@ -38,5 +38,5 @@ namespace SharedData
             }
             return file;
 		}
-	}
+    }
 }

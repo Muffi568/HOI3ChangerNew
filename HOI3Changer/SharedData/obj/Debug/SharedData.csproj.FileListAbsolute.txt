@@ -1,0 +1,8 @@
+C:\Users\Stephan Wedig\OneDrive\Documents\Visual_Studio\HOI3ChangerNew\HOI3Changer\SharedData\bin\Debug\SharedData.dll
+C:\Users\Stephan Wedig\OneDrive\Documents\Visual_Studio\HOI3ChangerNew\HOI3Changer\SharedData\bin\Debug\SharedData.pdb
+C:\Users\Stephan Wedig\OneDrive\Documents\Visual_Studio\HOI3ChangerNew\HOI3Changer\SharedData\obj\Debug\SharedData.csproj.CoreCompileInputs.cache
+C:\Users\Stephan Wedig\OneDrive\Documents\Visual_Studio\HOI3ChangerNew\HOI3Changer\SharedData\obj\Debug\SharedData.dll
+C:\Users\Stephan Wedig\OneDrive\Documents\Visual_Studio\HOI3ChangerNew\HOI3Changer\SharedData\obj\Debug\SharedData.pdb
+C:\Users\Stephan Wedig\OneDrive\Documents\Visual_Studio\HOI3ChangerNew\HOI3Changer\Bin\SharedData.dll
+C:\Users\Stephan Wedig\OneDrive\Documents\Visual_Studio\HOI3ChangerNew\HOI3Changer\Bin\SharedData.pdb
+C:\Users\Stephan Wedig\OneDrive\Documents\Visual_Studio\HOI3ChangerNew\HOI3Changer\SharedData\obj\Debug\SharedData.csprojAssemblyReference.cache

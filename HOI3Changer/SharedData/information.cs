@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SharedData {
 	public abstract class Information: INotifyPropertyChanged {
-		private string _shortcut;
+		private string _shortcut = "";
 		public string Shortcut { get { return _shortcut; }
 			set {
 				_shortcut = value;
@@ -23,6 +23,17 @@ namespace SharedData {
 		private void OnPropertyChanged(string property) {
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
 		}
+        public Information() { }
+        public Information (string line) {
+            string[] splittedLine = line.Split(';');
+            if (splittedLine.Length < 6)
+                return;
+            Shortcut = splittedLine[0];
+            English = splittedLine[1];
+            French = splittedLine[2];
+            German = splittedLine[3];
+            Spanish = splittedLine[5];
+        }
 		public override string ToString() {
 			//globalInfos global = globalInfos.getInstanz();
 			//Languages.languages language = global.getLanguage();
